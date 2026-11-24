@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Refresh the public CTA ridership snapshot used by the website."""
+"""Refresh yearly CTA ridership snapshots used by the website."""
 
 import json
 import math
@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parent
 OUTPUT_PATH = ROOT / "data" / "cta-ridership.json"
 PORTAL = "https://data.cityofchicago.org"
 STALE_AFTER_DAYS = 45
+PAGE_SIZE = 50000
 DATASETS = {
     "daily": {
         "id": "6iiy-9s97",
@@ -44,6 +45,21 @@ def fetch_rows(dataset_id, params):
     return rows
 
 
+def fetch_all_rows(dataset_id, params):
+    rows = []
+    offset = 0
+    while True:
+        page = fetch_rows(dataset_id, {
+            **params,
+            "$limit": str(PAGE_SIZE),
+            "$offset": str(offset),
+        })
+        rows.extend(page)
+        if len(page) < PAGE_SIZE:
+            return rows
+        offset += PAGE_SIZE
+
+
 def fetch_dataset_metadata(dataset_id):
     metadata = fetch_json(f"{PORTAL}/api/views/{dataset_id}.json")
     updated_at = datetime.fromtimestamp(
@@ -72,119 +88,145 @@ def period_age_days(latest_period, today=None):
 
 
 def freshness(latest_period, today=None):
-    age_days = period_age_days(latest_period, today)
     return {
         "latest_period": latest_period[:10],
         "stale_after_days": STALE_AFTER_DAYS,
-        "is_stale": age_days > STALE_AFTER_DAYS,
+        "is_stale": period_age_days(latest_period, today) > STALE_AFTER_DAYS,
     }
+
+
+def build_snapshots(daily_rows, route_rows, station_rows, source_updates, today=None):
+    if not daily_rows:
+        raise ValueError("The daily ridership dataset returned no records")
+    if not route_rows:
+        raise ValueError("The bus-route dataset returned no records")
+    if not station_rows:
+        raise ValueError("The rail-station dataset returned no records")
+
+    by_year = {}
+
+    def year_data(year):
+        return by_year.setdefault(year, {
+            "daily_ridership": [],
+            "bus_routes": [],
+            "rail_stations": [],
+        })
+
+    daily_dates = []
+    for row in daily_rows:
+        day = str(row["service_date"])[:10]
+        daily_dates.append(day)
+        year_data(int(day[:4]))["daily_ridership"].append({
+            "date": day,
+            "day_type": row["day_type"],
+            "bus": number(row["bus"]),
+            "rail_boardings": number(row["rail_boardings"]),
+            "total_rides": number(row["total_rides"]),
+        })
+
+    route_months = []
+    for row in route_rows:
+        month = str(row["month_beginning"])[:10]
+        route_months.append(month)
+        year_data(int(month[:4]))["bus_routes"].append({
+            "route": row["route"],
+            "name": row["routename"],
+            "month": month,
+            "month_total": number(row["monthtotal"]),
+        })
+
+    station_dates = []
+    for row in station_rows:
+        month = str(row["month"])[:10]
+        station_dates.append(str(row.get("latest_date", month))[:10])
+        year_data(int(month[:4]))["rail_stations"].append({
+            "name": row["stationname"],
+            "month": month,
+            "rides": number(row["rides"]),
+        })
+
+    latest_periods = {
+        "daily_ridership": max(daily_dates),
+        "bus_routes": max(route_months),
+        "rail_stations": max(station_dates),
+    }
+    dataset_names = {
+        "daily_ridership": "daily",
+        "bus_routes": "bus_routes",
+        "rail_stations": "rail_stations",
+    }
+    sources = {
+        name: {
+            **freshness(latest_period, today),
+            "source_updated_at": source_updates[dataset_names[name]],
+            "source_url": DATASETS[dataset_names[name]]["url"],
+        }
+        for name, latest_period in latest_periods.items()
+    }
+
+    yearly_snapshots = {
+        year: {
+            "schema_version": 2,
+            "year": year,
+            "daily_ridership": {"rows": sections["daily_ridership"]},
+            "bus_routes": {"rows": sections["bus_routes"]},
+            "rail_stations": {"rows": sections["rail_stations"]},
+        }
+        for year, sections in sorted(by_year.items())
+    }
+    manifest = {
+        "schema_version": 2,
+        "years": sorted(yearly_snapshots, reverse=True),
+        "sources": sources,
+    }
+    return {"manifest": manifest, "years": yearly_snapshots}
 
 
 def collect_snapshot(today=None):
-    daily_source = DATASETS["daily"]
-    daily_rows = fetch_rows(daily_source["id"], {
+    next_year = date.today().year + 1
+    end_date = f"{next_year}-01-01T00:00:00"
+    daily_rows = fetch_all_rows(DATASETS["daily"]["id"], {
         "$select": "service_date,day_type,bus,rail_boardings,total_rides",
-        "$order": "service_date DESC",
-        "$limit": "14",
+        "$where": f"service_date < '{end_date}'",
+        "$order": "service_date ASC",
     })
-    if not daily_rows:
-        raise ValueError("The daily ridership dataset returned no records")
-    daily_rows.sort(key=lambda row: row["service_date"])
-    daily_period = latest_date(daily_rows, "service_date")
-    daily_data = {
-        **freshness(daily_period, today),
-        "source_url": daily_source["url"],
-        "source_updated_at": fetch_dataset_metadata(daily_source["id"]),
-        "rows": [
-            {
-                "date": str(row["service_date"])[:10],
-                "day_type": row["day_type"],
-                "bus": number(row["bus"]),
-                "rail_boardings": number(row["rail_boardings"]),
-                "total_rides": number(row["total_rides"]),
-            }
-            for row in daily_rows
-        ],
+    route_rows = fetch_all_rows(DATASETS["bus_routes"]["id"], {
+        "$select": "route,routename,month_beginning,monthtotal",
+        "$where": f"month_beginning < '{end_date}'",
+        "$order": "month_beginning ASC,route ASC",
+    })
+    station_rows = fetch_all_rows(DATASETS["rail_stations"]["id"], {
+        "$select": "date_trunc_ym(date) as month,stationname,sum(rides) as rides,max(date) as latest_date",
+        "$where": f"date < '{end_date}'",
+        "$group": "month,stationname",
+        "$order": "month ASC,stationname ASC",
+    })
+    source_updates = {
+        name: fetch_dataset_metadata(dataset["id"])
+        for name, dataset in DATASETS.items()
     }
+    return build_snapshots(
+        daily_rows,
+        route_rows,
+        station_rows,
+        source_updates,
+        today,
+    )
 
-    route_source = DATASETS["bus_routes"]
-    route_period_rows = fetch_rows(route_source["id"], {
-        "$select": "month_beginning",
-        "$order": "month_beginning DESC",
-        "$limit": "1",
-    })
-    if not route_period_rows:
-        raise ValueError("The bus-route dataset returned no records")
-    route_month = route_period_rows[0]["month_beginning"]
-    route_rows = fetch_rows(route_source["id"], {
-        "$select": "route,routename,month_beginning,avg_weekday_rides",
-        "$where": f"month_beginning='{route_month}'",
-        "$order": "avg_weekday_rides DESC",
-        "$limit": "10",
-    })
-    if not route_rows:
-        raise ValueError(f"No bus routes were returned for {route_month}")
-    route_data = {
-        **freshness(route_month, today),
-        "source_url": route_source["url"],
-        "source_updated_at": fetch_dataset_metadata(route_source["id"]),
-        "rows": [
-            {
-                "route": row["route"],
-                "name": row["routename"],
-                "month_beginning": str(row["month_beginning"])[:10],
-                "avg_weekday_rides": number(row["avg_weekday_rides"]),
-            }
-            for row in route_rows
-        ],
-    }
 
-    station_source = DATASETS["rail_stations"]
-    station_period_rows = fetch_rows(station_source["id"], {
-        "$select": "date",
-        "$order": "date DESC",
-        "$limit": "1",
-    })
-    if not station_period_rows:
-        raise ValueError("The rail station dataset returned no records")
-    station_day = station_period_rows[0]["date"]
-    station_rows = fetch_rows(station_source["id"], {
-        "$select": "stationname,date,daytype,rides",
-        "$where": f"date='{station_day}'",
-        "$order": "rides DESC",
-        "$limit": "10",
-    })
-    if not station_rows:
-        raise ValueError(f"No rail stations were returned for {station_day}")
-    station_data = {
-        **freshness(station_day, today),
-        "source_url": station_source["url"],
-        "source_updated_at": fetch_dataset_metadata(station_source["id"]),
-        "rows": [
-            {
-                "name": row["stationname"],
-                "date": str(row["date"])[:10],
-                "day_type": row["daytype"],
-                "rides": number(row["rides"]),
-            }
-            for row in station_rows
-        ],
-    }
-
-    return {
-        "schema_version": 1,
-        "daily_ridership": daily_data,
-        "bus_routes": route_data,
-        "rail_stations": station_data,
-    }
+def write_json(path, data):
+    serialized = json.dumps(data, indent=2, sort_keys=True) + "\n"
+    temporary_path = path.with_suffix(path.suffix + ".tmp")
+    temporary_path.write_text(serialized, encoding="utf-8")
+    temporary_path.replace(path)
 
 
 def write_snapshot(snapshot, output_path=OUTPUT_PATH):
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    serialized = json.dumps(snapshot, indent=2, sort_keys=True) + "\n"
-    temporary_path = output_path.with_suffix(output_path.suffix + ".tmp")
-    temporary_path.write_text(serialized, encoding="utf-8")
-    temporary_path.replace(output_path)
+    for year, data in snapshot["years"].items():
+        yearly_path = output_path.with_name(f"cta-ridership-{year}.json")
+        write_json(yearly_path, data)
+    write_json(output_path, snapshot["manifest"])
 
 
 def main():
@@ -192,13 +234,15 @@ def main():
     write_snapshot(snapshot)
     checked_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
     print(f"Checked City of Chicago data at {checked_at}")
-    for name in ("daily_ridership", "bus_routes", "rail_stations"):
-        dataset = snapshot[name]
+    print(
+        "Published yearly snapshots: "
+        + ", ".join(map(str, snapshot["manifest"]["years"]))
+    )
+    for name, dataset in snapshot["manifest"]["sources"].items():
         freshness_status = "STALE" if dataset["is_stale"] else "current"
-        age_days = period_age_days(dataset["latest_period"])
         print(
             f"{name}: latest {dataset['latest_period']}, "
-            f"{age_days} days old ({freshness_status})"
+            f"{period_age_days(dataset['latest_period'])} days old ({freshness_status})"
         )
 
 

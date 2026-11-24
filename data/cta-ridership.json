@@ -1,248 +1,54 @@
 {
-  "bus_routes": {
-    "is_stale": true,
-    "latest_period": "2026-09-01",
-    "rows": [
-      {
-        "avg_weekday_rides": 19982.8,
-        "month_beginning": "2026-09-01",
-        "name": "Pulaski",
-        "route": "53"
-      },
-      {
-        "avg_weekday_rides": 19865.8,
-        "month_beginning": "2026-09-01",
-        "name": "Ashland",
-        "route": "9"
-      },
-      {
-        "avg_weekday_rides": 18883,
-        "month_beginning": "2026-09-01",
-        "name": "79th",
-        "route": "79"
-      },
-      {
-        "avg_weekday_rides": 18563,
-        "month_beginning": "2026-09-01",
-        "name": "Halsted",
-        "route": "8"
-      },
-      {
-        "avg_weekday_rides": 17744.4,
-        "month_beginning": "2026-09-01",
-        "name": "Chicago",
-        "route": "66"
-      },
-      {
-        "avg_weekday_rides": 16358.5,
-        "month_beginning": "2026-09-01",
-        "name": "Belmont",
-        "route": "77"
-      },
-      {
-        "avg_weekday_rides": 16102.7,
-        "month_beginning": "2026-09-01",
-        "name": "King Drive",
-        "route": "3"
-      },
-      {
-        "avg_weekday_rides": 15877.5,
-        "month_beginning": "2026-09-01",
-        "name": "Madison",
-        "route": "20"
-      },
-      {
-        "avg_weekday_rides": 15579.7,
-        "month_beginning": "2026-09-01",
-        "name": "Western",
-        "route": "49"
-      },
-      {
-        "avg_weekday_rides": 14904.2,
-        "month_beginning": "2026-09-01",
-        "name": "Cottage Grove",
-        "route": "4"
-      }
-    ],
-    "source_updated_at": "2026-11-20T20:39:42Z",
-    "source_url": "https://data.cityofchicago.org/d/bynn-gwxy",
-    "stale_after_days": 45
+  "schema_version": 2,
+  "sources": {
+    "bus_routes": {
+      "is_stale": true,
+      "latest_period": "2026-09-01",
+      "source_updated_at": "2026-11-20T20:39:42Z",
+      "source_url": "https://data.cityofchicago.org/d/bynn-gwxy",
+      "stale_after_days": 45
+    },
+    "daily_ridership": {
+      "is_stale": true,
+      "latest_period": "2026-09-30",
+      "source_updated_at": "2026-11-20T20:44:18Z",
+      "source_url": "https://data.cityofchicago.org/d/6iiy-9s97",
+      "stale_after_days": 45
+    },
+    "rail_stations": {
+      "is_stale": true,
+      "latest_period": "2026-09-30",
+      "source_updated_at": "2026-11-20T20:40:50Z",
+      "source_url": "https://data.cityofchicago.org/d/5neh-572f",
+      "stale_after_days": 45
+    }
   },
-  "daily_ridership": {
-    "is_stale": true,
-    "latest_period": "2026-09-30",
-    "rows": [
-      {
-        "bus": 661387,
-        "date": "2026-09-17",
-        "day_type": "W",
-        "rail_boardings": 509783,
-        "total_rides": 1171170
-      },
-      {
-        "bus": 700449,
-        "date": "2026-09-18",
-        "day_type": "W",
-        "rail_boardings": 500803,
-        "total_rides": 1201252
-      },
-      {
-        "bus": 441629,
-        "date": "2026-09-19",
-        "day_type": "A",
-        "rail_boardings": 361624,
-        "total_rides": 803253
-      },
-      {
-        "bus": 333208,
-        "date": "2026-09-20",
-        "day_type": "U",
-        "rail_boardings": 281252,
-        "total_rides": 614460
-      },
-      {
-        "bus": 667755,
-        "date": "2026-09-21",
-        "day_type": "W",
-        "rail_boardings": 447330,
-        "total_rides": 1115085
-      },
-      {
-        "bus": 722521,
-        "date": "2026-09-22",
-        "day_type": "W",
-        "rail_boardings": 534359,
-        "total_rides": 1256880
-      },
-      {
-        "bus": 713156,
-        "date": "2026-09-23",
-        "day_type": "W",
-        "rail_boardings": 529582,
-        "total_rides": 1242738
-      },
-      {
-        "bus": 711833,
-        "date": "2026-09-24",
-        "day_type": "W",
-        "rail_boardings": 542100,
-        "total_rides": 1253933
-      },
-      {
-        "bus": 629265,
-        "date": "2026-09-25",
-        "day_type": "W",
-        "rail_boardings": 468263,
-        "total_rides": 1097528
-      },
-      {
-        "bus": 498590,
-        "date": "2026-09-26",
-        "day_type": "A",
-        "rail_boardings": 385222,
-        "total_rides": 883812
-      },
-      {
-        "bus": 381021,
-        "date": "2026-09-27",
-        "day_type": "U",
-        "rail_boardings": 293693,
-        "total_rides": 674714
-      },
-      {
-        "bus": 684749,
-        "date": "2026-09-28",
-        "day_type": "W",
-        "rail_boardings": 467870,
-        "total_rides": 1152619
-      },
-      {
-        "bus": 719945,
-        "date": "2026-09-29",
-        "day_type": "W",
-        "rail_boardings": 508065,
-        "total_rides": 1228010
-      },
-      {
-        "bus": 650150,
-        "date": "2026-09-30",
-        "day_type": "W",
-        "rail_boardings": 488006,
-        "total_rides": 1138156
-      }
-    ],
-    "source_updated_at": "2026-11-20T20:44:18Z",
-    "source_url": "https://data.cityofchicago.org/d/6iiy-9s97",
-    "stale_after_days": 45
-  },
-  "rail_stations": {
-    "is_stale": true,
-    "latest_period": "2026-09-30",
-    "rows": [
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Clark/Lake",
-        "rides": 14520
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Lake/State",
-        "rides": 12761
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Fullerton",
-        "rides": 11676
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Washington/Wabash",
-        "rides": 10925
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Chicago/State",
-        "rides": 9519
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Washington/Dearborn",
-        "rides": 9391
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "O'Hare Airport",
-        "rides": 9065
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Belmont-North Main",
-        "rides": 8033
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Roosevelt",
-        "rides": 7554
-      },
-      {
-        "date": "2026-09-30",
-        "day_type": "W",
-        "name": "Washington/Wells",
-        "rides": 7309
-      }
-    ],
-    "source_updated_at": "2026-11-20T20:40:50Z",
-    "source_url": "https://data.cityofchicago.org/d/5neh-572f",
-    "stale_after_days": 45
-  },
-  "schema_version": 1
+  "years": [
+    2026,
+    2025,
+    2024,
+    2023,
+    2022,
+    2021,
+    2020,
+    2019,
+    2018,
+    2017,
+    2016,
+    2015,
+    2014,
+    2013,
+    2012,
+    2011,
+    2010,
+    2009,
+    2008,
+    2007,
+    2006,
+    2005,
+    2004,
+    2003,
+    2002,
+    2001
+  ]
 }
