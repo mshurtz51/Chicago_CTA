@@ -4,7 +4,8 @@ A Python data pipeline for the Chicago ridership dashboard on
 `madisynshurtz.com/analytics/cta`. It refreshes CTA-published datasets from the
 City of Chicago Data Portal and writes a small manifest plus one JSON snapshot
 per year. The dashboard fetches only the selected year's file, then lets users
-filter by month.
+filter by month. Daily route and station series are fetched from the portal only
+when a specific route or station is selected.
 
 ## What the counts mean
 
@@ -21,13 +22,22 @@ filter by month.
 - Daily bus and rail totals: [dataset 6iiy-9s97](https://data.cityofchicago.org/d/6iiy-9s97)
 - Monthly bus route totals: [dataset bynn-gwxy](https://data.cityofchicago.org/d/bynn-gwxy)
 - Daily rail station entries: [dataset 5neh-572f](https://data.cityofchicago.org/d/5neh-572f)
+- Daily bus-route rides: [dataset jyb9-n7fm](https://data.cityofchicago.org/d/jyb9-n7fm)
+- CTA rail stop-to-line mapping: [dataset 8pix-ypme](https://data.cityofchicago.org/d/8pix-ypme)
 
-The manifest records each dataset's latest available period and last portal
-update time. A period older than 45 days is flagged as stale; this is a warning,
-not a claim about CTA's publication schedule. At initial setup, daily and
-station records ended on September 30, 2026, while the bus-route data ended in
-September 2026. Scheduled refreshes can detect new records but cannot fill in
-data the source has not released.
+The manifest includes the current station-to-line mapping. Line memberships are
+combined across directional stop records, so transfer stations can show more
+than one line. Historical stations no longer in the current stop list remain
+unmapped. The dashboard's chart can show all CTA, bus, or rail totals and can
+drill down to one bus route or rail station. Missing daily bus-route records are
+shown as zero for dates present in the systemwide daily series.
+
+The schema-version-3 manifest records each dataset's latest available period
+and last portal update time. A period older than 45 days is flagged as stale;
+this is a warning, not a claim about CTA's publication schedule. At initial
+setup, daily and station records ended on September 30, 2026, while the
+bus-route data ended in September 2026. Scheduled refreshes can detect new
+records but cannot fill in data the source has not released.
 
 ## Run locally
 

@@ -27,7 +27,25 @@ DATASETS = {
         "id": "5neh-572f",
         "url": "https://data.cityofchicago.org/d/5neh-572f",
     },
+    "bus_route_daily": {
+        "id": "jyb9-n7fm",
+        "url": "https://data.cityofchicago.org/d/jyb9-n7fm",
+    },
+    "rail_stops": {
+        "id": "8pix-ypme",
+        "url": "https://data.cityofchicago.org/d/8pix-ypme",
+    },
 }
+RAIL_LINE_FIELDS = (
+    ("red", "Red"),
+    ("blue", "Blue"),
+    ("brn", "Brown"),
+    ("g", "Green"),
+    ("o", "Orange"),
+    ("pnk", "Pink"),
+    ("p", "Purple"),
+    ("y", "Yellow"),
+)
 
 
 def fetch_json(url):
@@ -95,7 +113,39 @@ def freshness(latest_period, today=None):
     }
 
 
-def build_snapshots(daily_rows, route_rows, station_rows, source_updates, today=None):
+def station_line_map(stop_rows):
+    memberships = {}
+    for row in stop_rows:
+        station_id = str(row.get("map_id", "")).strip()
+        if not station_id:
+            continue
+        station = memberships.setdefault(station_id, {
+            "name": row["station_name"],
+            "lines": set(),
+        })
+        for field, line in RAIL_LINE_FIELDS:
+            if row.get(field) is True or str(row.get(field)).lower() == "true":
+                station["lines"].add(line)
+    return {
+        station_id: {
+            "name": station["name"],
+            "lines": [
+                line for _, line in RAIL_LINE_FIELDS if line in station["lines"]
+            ],
+        }
+        for station_id, station in sorted(memberships.items())
+    }
+
+
+def build_snapshots(
+    daily_rows,
+    route_rows,
+    station_rows,
+    stop_rows,
+    source_updates,
+    daily_route_latest_period,
+    today=None,
+):
     if not daily_rows:
         raise ValueError("The daily ridership dataset returned no records")
     if not route_rows:
@@ -140,6 +190,7 @@ def build_snapshots(daily_rows, route_rows, station_rows, source_updates, today=
         month = str(row["month"])[:10]
         station_dates.append(str(row.get("latest_date", month))[:10])
         year_data(int(month[:4]))["rail_stations"].append({
+            "station_id": str(row["station_id"]),
             "name": row["stationname"],
             "month": month,
             "rides": number(row["rides"]),
@@ -149,11 +200,13 @@ def build_snapshots(daily_rows, route_rows, station_rows, source_updates, today=
         "daily_ridership": max(daily_dates),
         "bus_routes": max(route_months),
         "rail_stations": max(station_dates),
+        "daily_bus_routes": daily_route_latest_period,
     }
     dataset_names = {
         "daily_ridership": "daily",
         "bus_routes": "bus_routes",
         "rail_stations": "rail_stations",
+        "daily_bus_routes": "bus_route_daily",
     }
     sources = {
         name: {
@@ -166,7 +219,7 @@ def build_snapshots(daily_rows, route_rows, station_rows, source_updates, today=
 
     yearly_snapshots = {
         year: {
-            "schema_version": 2,
+            "schema_version": 3,
             "year": year,
             "daily_ridership": {"rows": sections["daily_ridership"]},
             "bus_routes": {"rows": sections["bus_routes"]},
@@ -175,9 +228,14 @@ def build_snapshots(daily_rows, route_rows, station_rows, source_updates, today=
         for year, sections in sorted(by_year.items())
     }
     manifest = {
-        "schema_version": 2,
+        "schema_version": 3,
         "years": sorted(yearly_snapshots, reverse=True),
         "sources": sources,
+        "rail_station_lines": station_line_map(stop_rows),
+        "rail_station_lines_source": {
+            "source_updated_at": source_updates["rail_stops"],
+            "source_url": DATASETS["rail_stops"]["url"],
+        },
     }
     return {"manifest": manifest, "years": yearly_snapshots}
 
@@ -196,11 +254,21 @@ def collect_snapshot(today=None):
         "$order": "month_beginning ASC,route ASC",
     })
     station_rows = fetch_all_rows(DATASETS["rail_stations"]["id"], {
-        "$select": "date_trunc_ym(date) as month,stationname,sum(rides) as rides,max(date) as latest_date",
+        "$select": "date_trunc_ym(date) as month,station_id,stationname,sum(rides) as rides,max(date) as latest_date",
         "$where": f"date < '{end_date}'",
-        "$group": "month,stationname",
-        "$order": "month ASC,stationname ASC",
+        "$group": "month,station_id,stationname",
+        "$order": "month ASC,station_id ASC",
     })
+    stop_rows = fetch_all_rows(DATASETS["rail_stops"]["id"], {
+        "$select": "map_id,station_name,red,blue,brn,g,o,pnk,p,y",
+        "$order": "map_id ASC,stop_id ASC",
+    })
+    route_date_rows = fetch_rows(DATASETS["bus_route_daily"]["id"], {
+        "$select": "max(date) as latest_date",
+    })
+    if not route_date_rows:
+        raise ValueError("The daily bus-route dataset returned no latest date")
+    daily_route_latest_period = latest_date(route_date_rows, "latest_date")
     source_updates = {
         name: fetch_dataset_metadata(dataset["id"])
         for name, dataset in DATASETS.items()
@@ -209,7 +277,9 @@ def collect_snapshot(today=None):
         daily_rows,
         route_rows,
         station_rows,
+        stop_rows,
         source_updates,
+        daily_route_latest_period,
         today,
     )
 

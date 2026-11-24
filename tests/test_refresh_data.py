@@ -10,6 +10,7 @@ from refresh_data import (
     latest_date,
     number,
     period_age_days,
+    station_line_map,
     write_snapshot,
 )
 
@@ -51,6 +52,8 @@ class RefreshDataTests(unittest.TestCase):
             "daily": "2026-11-20T00:00:00Z",
             "bus_routes": "2026-11-20T00:00:00Z",
             "rail_stations": "2026-11-20T00:00:00Z",
+            "bus_route_daily": "2026-11-20T00:00:00Z",
+            "rail_stops": "2026-11-20T00:00:00Z",
         }
         snapshot = build_snapshots(
             [
@@ -79,20 +82,57 @@ class RefreshDataTests(unittest.TestCase):
             ],
             [
                 {
+                    "station_id": "40380",
                     "month": "2026-01-01T00:00:00.000",
                     "stationname": "Clark/Lake",
                     "rides": "262710",
                     "latest_date": "2026-01-31T00:00:00.000",
                 },
             ],
+            [
+                {
+                    "map_id": "40380",
+                    "station_name": "Clark/Lake",
+                    "blue": True,
+                    "brn": False,
+                    "g": True,
+                    "o": False,
+                    "pnk": False,
+                    "p": False,
+                    "red": False,
+                    "y": False,
+                },
+                {
+                    "map_id": "40380",
+                    "station_name": "Clark/Lake",
+                    "blue": False,
+                    "brn": True,
+                    "g": False,
+                    "o": False,
+                    "pnk": True,
+                    "p": True,
+                    "red": False,
+                    "y": False,
+                },
+            ],
             source_updates,
+            "2026-01-31",
             date(2026, 11, 24),
         )
 
         self.assertEqual(snapshot["manifest"]["years"], [2026, 2025])
+        self.assertEqual(snapshot["manifest"]["schema_version"], 3)
         self.assertEqual(
             snapshot["manifest"]["sources"]["rail_stations"]["latest_period"],
             "2026-01-31",
+        )
+        self.assertEqual(
+            snapshot["manifest"]["sources"]["daily_bus_routes"]["latest_period"],
+            "2026-01-31",
+        )
+        self.assertEqual(
+            snapshot["manifest"]["rail_station_lines"]["40380"]["lines"],
+            ["Blue", "Brown", "Green", "Pink", "Purple"],
         )
         self.assertEqual(
             snapshot["years"][2026]["daily_ridership"]["rows"][0]["total_rides"],
@@ -106,6 +146,10 @@ class RefreshDataTests(unittest.TestCase):
             snapshot["years"][2026]["rail_stations"]["rows"][0]["rides"],
             262710,
         )
+        self.assertEqual(
+            snapshot["years"][2026]["rail_stations"]["rows"][0]["station_id"],
+            "40380",
+        )
         with tempfile.TemporaryDirectory() as directory:
             manifest_path = Path(directory) / "cta-ridership.json"
             write_snapshot(snapshot, manifest_path)
@@ -117,6 +161,17 @@ class RefreshDataTests(unittest.TestCase):
             )
         self.assertEqual(saved_manifest["years"], [2026, 2025])
         self.assertEqual(saved_year["year"], 2026)
+
+    def test_station_line_map_unions_lines_from_directional_stops(self):
+        mapping = station_line_map([
+            {"map_id": "41320", "station_name": "Belmont", "red": True, "brn": False, "p": False},
+            {"map_id": "41320", "station_name": "Belmont", "red": False, "brn": True, "p": True},
+        ])
+
+        self.assertEqual(
+            mapping["41320"]["lines"],
+            ["Red", "Brown", "Purple"],
+        )
 
 
 if __name__ == "__main__":

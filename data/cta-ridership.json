@@ -1,11 +1,935 @@
 {
-  "schema_version": 2,
+  "rail_station_lines": {
+    "40010": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Austin"
+    },
+    "40020": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Harlem/Lake"
+    },
+    "40030": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Pulaski"
+    },
+    "40040": {
+      "lines": [
+        "Brown",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "Quincy/Wells"
+    },
+    "40050": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Davis"
+    },
+    "40060": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Belmont"
+    },
+    "40070": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Jackson"
+    },
+    "40080": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Sheridan"
+    },
+    "40090": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Damen"
+    },
+    "40100": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Morse"
+    },
+    "40120": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "35th/Archer"
+    },
+    "40130": {
+      "lines": [
+        "Green"
+      ],
+      "name": "51st"
+    },
+    "40140": {
+      "lines": [
+        "Yellow"
+      ],
+      "name": "Dempster-Skokie"
+    },
+    "40150": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Pulaski"
+    },
+    "40160": {
+      "lines": [
+        "Brown",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "LaSalle/Van Buren"
+    },
+    "40170": {
+      "lines": [
+        "Green",
+        "Pink"
+      ],
+      "name": "Ashland"
+    },
+    "40180": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Oak Park"
+    },
+    "40190": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Sox-35th"
+    },
+    "40210": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Damen"
+    },
+    "40220": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Western"
+    },
+    "40230": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Cumberland"
+    },
+    "40240": {
+      "lines": [
+        "Red"
+      ],
+      "name": "79th"
+    },
+    "40250": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Kedzie-Homan"
+    },
+    "40260": {
+      "lines": [
+        "Brown",
+        "Green",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "State/Lake"
+    },
+    "40270": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Main"
+    },
+    "40280": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Central"
+    },
+    "40290": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Ashland/63rd"
+    },
+    "40300": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Indiana"
+    },
+    "40310": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "Western"
+    },
+    "40320": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Division"
+    },
+    "40330": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Grand"
+    },
+    "40340": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Berwyn"
+    },
+    "40350": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "UIC-Halsted"
+    },
+    "40360": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Southport"
+    },
+    "40370": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Washington"
+    },
+    "40380": {
+      "lines": [
+        "Blue",
+        "Brown",
+        "Green",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "Clark/Lake"
+    },
+    "40390": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Forest Park"
+    },
+    "40400": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Noyes"
+    },
+    "40420": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Cicero"
+    },
+    "40430": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Clinton"
+    },
+    "40440": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "California"
+    },
+    "40450": {
+      "lines": [
+        "Red"
+      ],
+      "name": "95th/Dan Ryan"
+    },
+    "40460": {
+      "lines": [
+        "Brown",
+        "Purple"
+      ],
+      "name": "Merchandise Mart"
+    },
+    "40470": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Racine"
+    },
+    "40480": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Cicero"
+    },
+    "40490": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Grand"
+    },
+    "40510": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Garfield"
+    },
+    "40520": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Foster"
+    },
+    "40530": {
+      "lines": [
+        "Brown",
+        "Purple"
+      ],
+      "name": "Diversey"
+    },
+    "40540": {
+      "lines": [
+        "Red",
+        "Purple"
+      ],
+      "name": "Wilson"
+    },
+    "40550": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Irving Park"
+    },
+    "40560": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Jackson"
+    },
+    "40570": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "California"
+    },
+    "40580": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "54th/Cermak"
+    },
+    "40590": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Damen"
+    },
+    "40600": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Kostner"
+    },
+    "40610": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Ridgeland"
+    },
+    "40630": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Clark/Division"
+    },
+    "40650": {
+      "lines": [
+        "Red"
+      ],
+      "name": "North/Clybourn"
+    },
+    "40660": {
+      "lines": [
+        "Brown",
+        "Purple"
+      ],
+      "name": "Armitage"
+    },
+    "40670": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Western"
+    },
+    "40680": {
+      "lines": [
+        "Brown",
+        "Green",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "Adams/Wabash"
+    },
+    "40690": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Dempster"
+    },
+    "40700": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Laramie"
+    },
+    "40710": {
+      "lines": [
+        "Brown",
+        "Purple"
+      ],
+      "name": "Chicago"
+    },
+    "40720": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Cottage Grove"
+    },
+    "40730": {
+      "lines": [
+        "Brown",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "Washington/Wells"
+    },
+    "40740": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Western"
+    },
+    "40750": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Harlem"
+    },
+    "40760": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Granville"
+    },
+    "40770": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Lawrence"
+    },
+    "40780": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Central Park"
+    },
+    "40790": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Monroe"
+    },
+    "40800": {
+      "lines": [
+        "Brown",
+        "Purple"
+      ],
+      "name": "Sedgwick"
+    },
+    "40810": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Illinois Medical District"
+    },
+    "40820": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Rosemont"
+    },
+    "40830": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "18th"
+    },
+    "40840": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "South Boulevard"
+    },
+    "40850": {
+      "lines": [
+        "Brown",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "Harold Washington Library-State/Van Buren"
+    },
+    "40870": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Francisco"
+    },
+    "40880": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Thorndale"
+    },
+    "40890": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "O'Hare"
+    },
+    "40900": {
+      "lines": [
+        "Red",
+        "Purple",
+        "Yellow"
+      ],
+      "name": "Howard"
+    },
+    "40910": {
+      "lines": [
+        "Red"
+      ],
+      "name": "63rd"
+    },
+    "40920": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Pulaski"
+    },
+    "40930": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "Midway"
+    },
+    "40940": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Halsted"
+    },
+    "40960": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "Pulaski"
+    },
+    "40970": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Cicero"
+    },
+    "40980": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Harlem"
+    },
+    "40990": {
+      "lines": [
+        "Red"
+      ],
+      "name": "69th"
+    },
+    "41000": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Cermak-Chinatown"
+    },
+    "41010": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Rockwell"
+    },
+    "41020": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Logan Square"
+    },
+    "41030": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Polk"
+    },
+    "41040": {
+      "lines": [
+        "Pink"
+      ],
+      "name": "Kedzie"
+    },
+    "41050": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Linden"
+    },
+    "41060": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "Ashland"
+    },
+    "41070": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Kedzie"
+    },
+    "41080": {
+      "lines": [
+        "Green"
+      ],
+      "name": "47th"
+    },
+    "41090": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Monroe"
+    },
+    "41120": {
+      "lines": [
+        "Green"
+      ],
+      "name": "35th-Bronzeville-IIT"
+    },
+    "41130": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "Halsted"
+    },
+    "41140": {
+      "lines": [
+        "Green"
+      ],
+      "name": "King Drive"
+    },
+    "41150": {
+      "lines": [
+        "Orange"
+      ],
+      "name": "Kedzie"
+    },
+    "41160": {
+      "lines": [
+        "Green",
+        "Pink"
+      ],
+      "name": "Clinton"
+    },
+    "41170": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Garfield"
+    },
+    "41180": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Kedzie"
+    },
+    "41190": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Jarvis"
+    },
+    "41200": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Argyle"
+    },
+    "41210": {
+      "lines": [
+        "Brown",
+        "Purple"
+      ],
+      "name": "Wellington"
+    },
+    "41220": {
+      "lines": [
+        "Red",
+        "Brown",
+        "Purple"
+      ],
+      "name": "Fullerton"
+    },
+    "41230": {
+      "lines": [
+        "Red"
+      ],
+      "name": "47th"
+    },
+    "41240": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Addison"
+    },
+    "41250": {
+      "lines": [
+        "Purple"
+      ],
+      "name": "Central"
+    },
+    "41260": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Austin"
+    },
+    "41270": {
+      "lines": [
+        "Green"
+      ],
+      "name": "43rd"
+    },
+    "41280": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Jefferson Park"
+    },
+    "41290": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Kimball"
+    },
+    "41300": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Loyola"
+    },
+    "41310": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Paulina"
+    },
+    "41320": {
+      "lines": [
+        "Red",
+        "Brown",
+        "Purple"
+      ],
+      "name": "Belmont"
+    },
+    "41330": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Montrose"
+    },
+    "41340": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "LaSalle"
+    },
+    "41350": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Oak Park"
+    },
+    "41360": {
+      "lines": [
+        "Green"
+      ],
+      "name": "California"
+    },
+    "41380": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Bryn Mawr"
+    },
+    "41400": {
+      "lines": [
+        "Red",
+        "Green",
+        "Orange"
+      ],
+      "name": "Roosevelt"
+    },
+    "41410": {
+      "lines": [
+        "Blue"
+      ],
+      "name": "Chicago"
+    },
+    "41420": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Addison"
+    },
+    "41430": {
+      "lines": [
+        "Red"
+      ],
+      "name": "87th"
+    },
+    "41440": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Addison"
+    },
+    "41450": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Chicago"
+    },
+    "41460": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Irving Park"
+    },
+    "41480": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Western"
+    },
+    "41490": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Harrison"
+    },
+    "41500": {
+      "lines": [
+        "Brown"
+      ],
+      "name": "Montrose"
+    },
+    "41510": {
+      "lines": [
+        "Green",
+        "Pink"
+      ],
+      "name": "Morgan"
+    },
+    "41660": {
+      "lines": [
+        "Red"
+      ],
+      "name": "Lake"
+    },
+    "41670": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Conservatory"
+    },
+    "41680": {
+      "lines": [
+        "Yellow"
+      ],
+      "name": "Oakton-Skokie"
+    },
+    "41690": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Cermak-McCormick Place"
+    },
+    "41700": {
+      "lines": [
+        "Brown",
+        "Green",
+        "Orange",
+        "Pink",
+        "Purple"
+      ],
+      "name": "Washington/Wabash"
+    },
+    "41710": {
+      "lines": [
+        "Green"
+      ],
+      "name": "Damen"
+    }
+  },
+  "rail_station_lines_source": {
+    "source_updated_at": "2025-11-19T18:14:37Z",
+    "source_url": "https://data.cityofchicago.org/d/8pix-ypme"
+  },
+  "schema_version": 3,
   "sources": {
     "bus_routes": {
       "is_stale": true,
       "latest_period": "2026-09-01",
       "source_updated_at": "2026-11-20T20:39:42Z",
       "source_url": "https://data.cityofchicago.org/d/bynn-gwxy",
+      "stale_after_days": 45
+    },
+    "daily_bus_routes": {
+      "is_stale": true,
+      "latest_period": "2026-09-30",
+      "source_updated_at": "2026-11-20T20:38:41Z",
+      "source_url": "https://data.cityofchicago.org/d/jyb9-n7fm",
       "stale_after_days": 45
     },
     "daily_ridership": {
