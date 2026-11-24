@@ -29,8 +29,10 @@ The manifest includes the current station-to-line mapping. Line memberships are
 combined across directional stop records, so transfer stations can show more
 than one line. Historical stations no longer in the current stop list remain
 unmapped. The dashboard's chart can show all CTA, bus, or rail totals and can
-drill down to one bus route or rail station. Missing daily bus-route records are
-shown as zero for dates present in the systemwide daily series.
+drill down to one bus route, rail line, or rail station. Transfer stations are
+included in each line they serve, so line totals overlap and should not be added
+together. Missing daily bus-route records are shown as zero for dates present
+in the systemwide daily series.
 
 The schema-version-3 manifest records each dataset's latest available period
 and last portal update time. A period older than 45 days is flagged as stale;
